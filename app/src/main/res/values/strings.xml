@@ -3,4 +3,6 @@
     <string name="app_desc">FOT’s latest news and updates</string>
     <string name="footer_text">UOC | FOT</string>
     <string name="logo_desc">app logo</string>
+    <string name="signup_text"><u>New user? Sign up</u></string>
+
 </resources>

@@ -123,7 +123,7 @@
         android:id="@+id/signupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New user? Sign Up"
+        android:text="@string/signup_text"
         android:textSize="16sp"
         android:textColor="#000"
         android:layout_marginTop="16dp"
@@ -185,21 +185,21 @@
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginHorizontal="1dp"
+            android:layout_marginHorizontal="6dp"
             android:src="@drawable/google"
             android:contentDescription="google" />
 
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginHorizontal="1dp"
+            android:layout_marginHorizontal="6dp"
             android:src="@drawable/facebook"
             android:contentDescription="facebook" />
 
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginHorizontal="1dp"
+            android:layout_marginHorizontal="6dp"
             android:src="@drawable/linkedin"
             android:contentDescription="linkedin" />
     </LinearLayout>

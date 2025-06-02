@@ -1,5 +1,7 @@
 package com.example.news_app;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MotionEvent;
@@ -14,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private CheckBox rememberMeCheckBox;
-    private TextView forgotPasswordText;
+    private TextView forgotPasswordText, signupText;
     private Button loginBtn;
 
     private boolean isPasswordVisible = false;
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         rememberMeCheckBox = findViewById(R.id.rememberMe);
         forgotPasswordText = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.loginBtn);
+        signupText = findViewById(R.id.signupText);
 
         // Toggle password visibility
         passwordEditText.setOnTouchListener((v, event) -> {
@@ -71,6 +74,17 @@ public class LoginActivity extends AppCompatActivity {
         // Forgot password click
         forgotPasswordText.setOnClickListener(v ->
                 Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show());
+
+        // "New user? Sign up" click to open SignupActivity
+        signupText.setOnClickListener(v -> {
+            signupText.setPaintFlags(signupText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+
+
+
     }
 
 }

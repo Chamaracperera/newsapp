@@ -1,6 +1,10 @@
 package com.example.news_app;
 
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -21,10 +30,13 @@ public class SignupActivity extends AppCompatActivity {
     private boolean isPasswordVisible = false;
     private boolean isConfirmPasswordVisible = false;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.activity_signup);
 
         // Initialize views
         usernameEditText = findViewById(R.id.username);
@@ -91,13 +103,15 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        loginText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Navigate to LoginActivity
-                Toast.makeText(SignupActivity.this, "Go to LoginActivity", Toast.LENGTH_SHORT).show();
-            }
+        loginText.setOnClickListener(v ->{
+            loginText.setPaintFlags(loginText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
     }
 
     private void handleSignup() {
@@ -116,7 +130,27 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: Implement actual signup logic (e.g., send to server)
-        Toast.makeText(this, "Signup successful (not implemented)", Toast.LENGTH_SHORT).show();
+        // Create user in Firebase Authentication
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        // Save additional user data to Realtime Database
+                        User newUser = new User(username, email);
+                        databaseReference.child(user.getUid()).setValue(newUser)
+                                .addOnCompleteListener(dbTask -> {
+                                    if (dbTask.isSuccessful()) {
+                                        Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
+                                        // TODO: Navigate to main activity or login screen
+                                    } else {
+                                        Toast.makeText(SignupActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                    } else {
+                        Toast.makeText(SignupActivity.this, "Signup failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
