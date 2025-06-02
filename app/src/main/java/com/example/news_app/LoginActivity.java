@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
     private CheckBox rememberMeCheckBox;
     private TextView forgotPasswordText;
@@ -73,3 +73,4 @@ public class LoginActivity extends AppCompatActivity{
                 Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show());
     }
 
+}
