@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">news-app</string>
+    <string name="footer_text">UOC | FOT</string>
+    <string name="logo_desc">app logo</string>
 </resources>
