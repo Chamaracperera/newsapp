@@ -89,7 +89,8 @@
 
             android:text="Remember me"
             android:textColor="#000"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/forgotPassword"

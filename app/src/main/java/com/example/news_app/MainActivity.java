@@ -19,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView logoImage = findViewById(R.id.logoImage);
+        ImageView fotlogo = findViewById(R.id.fotlogo);
+
+        // Load fade-in animation
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.animator.fade_in);
+        fotlogo.startAnimation(fadeIn);
 
         // Start with logo off-screen (left)
         logoImage.setTranslationX(750f);
