@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -142,7 +143,9 @@ public class SignupActivity extends AppCompatActivity {
                                 .addOnCompleteListener(dbTask -> {
                                     if (dbTask.isSuccessful()) {
                                         Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
-                                        // TODO: Navigate to main activity or login screen
+                                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class); // or MainActivity if login isn't needed yet
+                                        startActivity(intent);
+                                        finish();
                                     } else {
                                         Toast.makeText(SignupActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
                                     }
