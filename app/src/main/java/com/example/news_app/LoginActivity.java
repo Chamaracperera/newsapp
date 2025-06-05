@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordVisible = false;
     private FirebaseAuth mAuth;
+    private AuthPreferences authPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,31 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        authPreferences = new AuthPreferences(this);
+
+        // Replace the direct check with this:
+        if (authPreferences.shouldAutoLogin()) {
+            authPreferences.attemptAutoLogin(this, new AuthPreferences.AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    navigateToHome();
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {  // Add String parameter
+                    Toast.makeText(LoginActivity.this,
+                            "Auto-login failed: " + errorMessage,
+                            Toast.LENGTH_SHORT).show();
+                    proceedToLoginUI();
+                }
+            });
+        } else {
+            proceedToLoginUI();
+        }
+    }
+
+    private void proceedToLoginUI() {
+        setContentView(R.layout.activity_login);
 
         // Initialize views
         usernameEditText = findViewById(R.id.username);
@@ -44,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         forgotPasswordText = findViewById(R.id.forgotPassword);
         loginBtn = findViewById(R.id.loginBtn);
         signupText = findViewById(R.id.signupText);
+
+        // Restore saved username if exists
+        String savedUsername = authPreferences.getUsername();
+        if (!savedUsername.isEmpty()) {
+            usernameEditText.setText(savedUsername);
+            rememberMeCheckBox.setChecked(true);
+        }
 
         // Toggle password visibility
         passwordEditText.setOnTouchListener((v, event) -> {
@@ -90,9 +123,14 @@ public class LoginActivity extends AppCompatActivity {
                             mAuth.signInWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
+                                            // Save login state if "Remember Me" is checked
+                                            if (rememberMeCheckBox.isChecked()) {
+                                                authPreferences.saveLoginState(true, username, email, true); // 4th param = rememberMe
+                                            } else {
+                                                authPreferences.clearLoginState();
+                                            }
                                             Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                            finish();
+                                            navigateToHome();
                                         } else {
                                             Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                         }
@@ -120,5 +158,19 @@ public class LoginActivity extends AppCompatActivity {
             signupText.setPaintFlags(signupText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             startActivity(new Intent(LoginActivity.this, SignupActivity.class));
         });
+    }
+
+    private void navigateToHome() {
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clear if not remembered
+        if (!rememberMeCheckBox.isChecked()) {
+            authPreferences.clearLoginState();
+        }
     }
 }
