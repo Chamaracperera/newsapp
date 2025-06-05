@@ -6,18 +6,24 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.firebase.FirebaseApp;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int SPLASH_DISPLAY_TIME = 3000; // 3 seconds
+    private AuthPreferences authPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
+
+        // Initialize AuthPreferences
+        authPreferences = new AuthPreferences(this);
 
         ImageView logoImage = findViewById(R.id.logoImage);
         ImageView fotlogo = findViewById(R.id.fotlogo);
@@ -37,11 +43,36 @@ public class MainActivity extends AppCompatActivity {
             logoImage.startAnimation(animation);
         }, 800);
 
-        // Move to LoginActivity after splash delay
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }, SPLASH_DISPLAY_TIME);
+        // After splash time, check auto login
+        new Handler().postDelayed(this::checkAutoLogin, SPLASH_DISPLAY_TIME);
+    }
+
+    private void checkAutoLogin() {
+        if (authPreferences.shouldAutoLogin()) {
+            authPreferences.attemptAutoLogin(this, new AuthPreferences.AuthCallback() {
+                @Override
+                public void onSuccess() {
+                    navigateTo(HomeActivity.class);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    Toast.makeText(MainActivity.this,
+                            "Auto-login failed: " + errorMessage,
+                            Toast.LENGTH_SHORT).show();
+                    navigateTo(LoginActivity.class);
+                }
+            });
+        } else {
+            navigateTo(LoginActivity.class);
+        }
+    }
+
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(MainActivity.this, destination);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }
+

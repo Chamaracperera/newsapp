@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/home">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- Menu Icon -->
+        <ImageView
+            android:id="@+id/menuicon"
+            android:layout_width="24dp"
+            android:layout_height="36dp"
+            android:contentDescription="Menu Icon"
+            android:src="@drawable/menu" />
+
+        <!-- App Logo Text -->
+        <ImageView
+            android:id="@+id/applogo"
+            android:layout_width="57dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:src="@drawable/logo"/>
+
+        <!-- Notification Icon -->
+        <ImageView
+            android:id="@+id/notification"
+            android:layout_width="24dp"
+            android:layout_height="42dp"
+            android:layout_gravity="end"
+            android:contentDescription="Notification"
+            android:src="@drawable/unmute" />
+    </LinearLayout>
+
+    <!-- Popular Now Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Popular now"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="1dp"/>
+
+    <!-- Featured News (RecyclerView for horizontal scroll) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/featuredRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="1dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_featured_news"/>
+
+    <!-- Category Tabs (Fixed Mode) -->
+    <LinearLayout
+        android:id="@+id/categoryTabsContainer"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_tab_container"
+        android:layout_gravity="center"
+        android:padding="8dp">
+
+        <!-- All Tab -->
+        <TextView
+            android:id="@+id/tabAll"
+            style="@style/TabStyle"
+            android:text="All"
+            android:textSize="17dp"
+            android:background="@drawable/bg_tab_selected" />
+
+        <!-- Sports Tab -->
+
+        <!-- Academic Tab -->
+
+        <TextView
+            android:id="@+id/tabSports"
+            style="@style/TabStyle"
+            android:background="@drawable/bg_tab_unselected"
+            android:text="Sports"
+            />
+
+        <TextView
+            android:id="@+id/tabAcademic"
+            style="@style/TabStyle"
+            android:text="Academic"
+            android:background="@drawable/bg_tab_unselected" />
+
+        <!-- Events Tab -->
+        <TextView
+            android:id="@+id/tabEvents"
+            style="@style/TabStyle"
+            android:text="Events"
+            android:background="@drawable/bg_tab_unselected" />
+    </LinearLayout>
+
+
+    <!-- Regular News List (Scrollable) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/newsRecyclerView"
+        android:layout_width="390dp"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:visibility="visible"
+        android:background="@drawable/news_container"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_regular_news"/>
+
+
+</LinearLayout>
