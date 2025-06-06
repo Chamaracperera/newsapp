@@ -8,43 +8,10 @@
     android:background="@drawable/home">
 
     <!-- Toolbar -->
-    <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="390dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp">
-
-        <!-- Menu Icon -->
-        <ImageView
-            android:id="@+id/menuicon"
-            android:layout_width="24dp"
-            android:layout_height="36dp"
-            android:contentDescription="Menu Icon"
-            android:src="@drawable/menu" />
-
-        <!-- App Logo Text -->
-        <ImageView
-            android:id="@+id/applogo"
-            android:layout_width="57dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:src="@drawable/logo"/>
-
-        <!-- Notification Icon -->
-        <ImageView
-            android:id="@+id/notification"
-            android:layout_width="24dp"
-            android:layout_height="42dp"
-            android:layout_gravity="end"
-            android:contentDescription="Notification"
-            android:src="@drawable/unmute" />
-    </LinearLayout>
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <!-- Popular Now Section -->
     <TextView
@@ -55,23 +22,24 @@
         android:textSize="24sp"
         android:textStyle="bold|italic"
         android:paddingStart="24dp"
-        android:paddingTop="8dp"
+        android:layout_marginTop="-4dp"
         android:paddingEnd="24dp"
         android:paddingBottom="1dp"/>
 
     <!-- Featured News (RecyclerView for horizontal scroll) -->
+
+    <!-- Category Tabs (Fixed Mode) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/featuredRecycler"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="252dp"
         android:orientation="horizontal"
+        android:layout_marginTop="-10dp"
         android:paddingBottom="16dp"
-        android:paddingTop="1dp"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_featured_news"/>
+        tools:listitem="@layout/item_featured_news" />
 
-    <!-- Category Tabs (Fixed Mode) -->
     <LinearLayout
         android:id="@+id/categoryTabsContainer"
         android:layout_width="390dp"

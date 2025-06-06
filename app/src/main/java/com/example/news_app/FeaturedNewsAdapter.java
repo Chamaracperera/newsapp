@@ -14,12 +14,19 @@ import java.util.List;
 
 public class FeaturedNewsAdapter extends RecyclerView.Adapter<FeaturedNewsAdapter.FeaturedViewHolder> {
 
+    // 1. Add click listener interface
+    public interface OnNewsClickListener {
+        void onNewsClick(NewsItem newsItem);
+    }
     private final Context context;
     private final List<NewsItem> featuredItems;
+    private final OnNewsClickListener listener; // Listener field
 
-    public FeaturedNewsAdapter(Context context, List<NewsItem> featuredItems) {
+    // 2. Update constructor to include listener
+    public FeaturedNewsAdapter(Context context, List<NewsItem> featuredItems, OnNewsClickListener listener) {
         this.context = context;
         this.featuredItems = featuredItems;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +47,13 @@ public class FeaturedNewsAdapter extends RecyclerView.Adapter<FeaturedNewsAdapte
                 .placeholder(R.drawable.ic_news_placeholder)
                 .error(R.drawable.ic_news_placeholder)
                 .into(holder.image);
+
+        // 3. Set click listener on the card
+        holder.card.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onNewsClick(item);
+            }
+        });
     }
 
     @Override

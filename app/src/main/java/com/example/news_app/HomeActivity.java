@@ -1,16 +1,13 @@
 package com.example.news_app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ValueEventListener;
 
@@ -29,7 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity implements
+        FeaturedNewsAdapter.OnNewsClickListener,
+        RegularNewsAdapter.OnNewsClickListener {
 
     private static final String TAG = "HomeActivity";
     private RecyclerView featuredRecycler, newsRecyclerView;
@@ -43,17 +41,14 @@ public class HomeActivity extends AppCompatActivity {
     private TextView tabAll, tabSports, tabAcademic, tabEvents;
     private View currentlySelectedTab;
 
-    // Notification icon
-    private ImageView notificationIcon;
-    private boolean isMuted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        setupToolbar(true); // From BaseActivity
         initializeViews();
-        setupAdapters();
         setupTabListeners();
         loadNewsData();
     }
@@ -70,50 +65,22 @@ public class HomeActivity extends AppCompatActivity {
         currentlySelectedTab = tabAll;
         tabAll.setBackgroundResource(R.drawable.bg_tab_selected);
 
-        // Notification icon setup
-        notificationIcon = findViewById(R.id.notification);
-        loadMuteState(); // Set initial state
-
-        notificationIcon.setOnClickListener(v -> {
-            isMuted = !isMuted;
-            updateNotificationIcon();
-            saveMuteState(isMuted);
-        });
-    }
-    private void updateNotificationIcon() {
-        if (isMuted) {
-            notificationIcon.setImageResource(R.drawable.mute);
-            Toast.makeText(this, "Notifications Muted", Toast.LENGTH_SHORT).show();
-        } else {
-            notificationIcon.setImageResource(R.drawable.unmute);
-            Toast.makeText(this, "Notifications Unmuted", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void saveMuteState(boolean state) {
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        prefs.edit().putBoolean("mute_state", state).apply();
-    }
-
-    private void loadMuteState() {
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-        isMuted = prefs.getBoolean("mute_state", false);
-        updateNotificationIcon();
     }
 
 
     private void setupAdapters() {
-        // Featured news (horizontal scrolling)
-        featuredRecycler.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.HORIZONTAL, false));
-        featuredAdapter  = new FeaturedNewsAdapter(this, featuredList);
-        featuredRecycler.setAdapter(featuredAdapter );
+        // Featured news adapter with click listener
+        featuredRecycler.setLayoutManager(new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false));
+        featuredAdapter = new FeaturedNewsAdapter(this, featuredList, this);
+        featuredRecycler.setAdapter(featuredAdapter);
 
-        // Regular news (vertical scrolling)
+        // Regular news adapter with click listener
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        regularAdapter  = new RegularNewsAdapter(this, newsItemList);
-        newsRecyclerView.setAdapter(regularAdapter );
+        regularAdapter = new RegularNewsAdapter(this, newsItemList, this);
+        newsRecyclerView.setAdapter(regularAdapter);
     }
+
 
     private void setupTabListeners() {
         setupTabClickListener(tabAll, "All");
@@ -210,10 +177,12 @@ public class HomeActivity extends AppCompatActivity {
                 featuredList.addAll(allItems.subList(0, Math.min(3, allItems.size())));
 
                 // Apply current filter
-                String currentCategory = getCurrentCategory();
-                filterNewsByCategory(currentCategory);
 
                 runOnUiThread(() -> {
+                    setupAdapters(); // ✅ Moved here
+                    String currentCategory = getCurrentCategory();
+                    filterNewsByCategory(currentCategory);
+
                     featuredAdapter.notifyDataSetChanged();
                     regularAdapter.notifyDataSetChanged();
                 });
@@ -234,5 +203,17 @@ public class HomeActivity extends AppCompatActivity {
         if (currentlySelectedTab == tabAcademic) return "Academic";
         if (currentlySelectedTab == tabEvents) return "Events";
         return "All";
+    }
+
+    @Override
+    public void onNewsClick(NewsItem newsItem) {
+        openNewsDetail(newsItem);
+    }
+
+    private void openNewsDetail(NewsItem newsItem) {
+        Intent intent = new Intent(this, NewsActivity.class);
+        intent.putExtra("news_item", newsItem);
+        startActivity(intent);
+        overridePendingTransition(R.animator.slide_in_right, R.animator.slide_out_left);
     }
 }
