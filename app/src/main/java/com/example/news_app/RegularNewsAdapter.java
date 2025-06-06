@@ -23,12 +23,21 @@ public class RegularNewsAdapter extends RecyclerView.Adapter<RegularNewsAdapter.
 
     private static final String TAG = "RegularNewsAdapter";
 
+    // Add click listener interface
+    public interface OnNewsClickListener {
+        void onNewsClick(NewsItem newsItem);
+    }
+
+
     private final Context context;
     private final List<NewsItem> regularItems;
+    private final OnNewsClickListener listener;  // Add listener field
 
-    public RegularNewsAdapter(Context context, List<NewsItem> regularItems) {
+
+    public RegularNewsAdapter(Context context, List<NewsItem> regularItems, OnNewsClickListener listener) {
         this.context = context;
         this.regularItems = regularItems;
+        this.listener = listener;
     }
 
     @NonNull
@@ -90,6 +99,13 @@ public class RegularNewsAdapter extends RecyclerView.Adapter<RegularNewsAdapter.
                     }
                 })
                 .into(holder.image);
+
+        // Set click listener on the item view
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onNewsClick(item);
+            }
+        });
     }
 
     @Override

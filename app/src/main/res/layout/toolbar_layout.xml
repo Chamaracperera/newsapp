@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- Menu Icon -->
+        <ImageView
+            android:id="@+id/navIcon"
+            android:layout_width="24dp"
+            android:layout_height="36dp"
+            android:contentDescription="navigation Icon"
+            android:src="@drawable/menu" />
+
+        <!-- App Logo Text -->
+        <ImageView
+            android:id="@+id/applogo"
+            android:layout_width="57dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:src="@drawable/logo" />
+
+        <!-- Notification Icon -->
+        <ImageView
+            android:id="@+id/notification"
+            android:layout_width="24dp"
+            android:layout_height="42dp"
+            android:layout_gravity="end"
+            android:contentDescription="Notification"
+            android:src="@drawable/unmute" />
+    </LinearLayout>
+</LinearLayout>
