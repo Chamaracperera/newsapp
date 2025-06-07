@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
             usersRef.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

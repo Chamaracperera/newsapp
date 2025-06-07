@@ -47,11 +47,19 @@ public class HomeActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        setupToolbar(true); // From BaseActivity
+        setupToolbar(true,false); // From BaseActivity
         initializeViews();
         setupTabListeners();
         loadNewsData();
     }
+
+    @Override
+    protected void handleMenuClick() {
+        startActivity(new Intent(this, DrawerActivity.class));
+        // Optional: Add slide animation
+        overridePendingTransition(R.animator.slide_in_left, 0);
+    }
+
 
     private void initializeViews() {
         featuredRecycler = findViewById(R.id.featuredRecycler);

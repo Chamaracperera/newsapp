@@ -42,7 +42,7 @@ public class NewsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        setupToolbar(false); // Initialize toolbar from BaseActivity
+        setupToolbar(false,false); // Initialize toolbar from BaseActivity
         initializeViews();
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -240,18 +240,5 @@ public class NewsActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void handleMenuClick() {
-        // Override menu click to handle back navigation
-        onBackPressed();
-    }
 
-    @Override
-    protected void handleLogoClick() {
-        // Optional: Add specific behavior for logo click in NewsActivity
-        // For example, go back to HomeActivity
-        if (!isFinishing()) {
-            finish();
-        }
-    }
 }

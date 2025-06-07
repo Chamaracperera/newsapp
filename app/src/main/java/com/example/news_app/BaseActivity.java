@@ -16,12 +16,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    protected void setupToolbar(boolean isHomeActivity) {
+    protected void setupToolbar(boolean isHomeActivity, boolean isDrawerActivity) {
         notificationIcon = findViewById(R.id.notification);
         navIcon = findViewById(R.id.navIcon); // Updated ID
 
         // Set appropriate icon based on activity type
-        if (isHomeActivity) {
+        if (isHomeActivity || isDrawerActivity) {
             navIcon.setImageResource(R.drawable.menu);
             navIcon.setOnClickListener(v -> handleMenuClick());
         } else {
@@ -68,6 +68,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+
 
     protected void handleMenuClick() {
         // Default implementation - can be overridden
