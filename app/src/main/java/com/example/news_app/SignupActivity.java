@@ -112,7 +112,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
     }
 
     private void handleSignup() {
@@ -142,17 +142,29 @@ public class SignupActivity extends AppCompatActivity {
                         databaseReference.child(user.getUid()).setValue(newUser)
                                 .addOnCompleteListener(dbTask -> {
                                     if (dbTask.isSuccessful()) {
-                                        Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class); // or MainActivity if login isn't needed yet
-                                        startActivity(intent);
-                                        finish();
+                                        // Also save the username under a "usernames" node for easy lookup
+                                        DatabaseReference usernamesRef = FirebaseDatabase.getInstance()
+                                                .getReference("usernames");
+                                        usernamesRef.child(username.toLowerCase()).setValue(user.getUid())
+                                                .addOnCompleteListener(usernameTask -> {
+                                                    Toast.makeText(SignupActivity.this,
+                                                            "Signup successful!",
+                                                            Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(SignupActivity.this,
+                                                            LoginActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                });
                                     } else {
-                                        Toast.makeText(SignupActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignupActivity.this,
+                                                "Failed to save user data",
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
                     } else {
-                        Toast.makeText(SignupActivity.this, "Signup failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignupActivity.this,
+                                "Signup failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
     }
