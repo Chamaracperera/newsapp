@@ -33,8 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         updateNotificationIcon(); // Initialize the correct icon state
         notificationIcon.setOnClickListener(v -> toggleNotificationState());
 
-        ImageView appLogo = findViewById(R.id.applogo);
-        appLogo.setOnClickListener(v -> handleLogoClick());
     }
 
     // Method to toggle notification state
@@ -76,8 +74,5 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Example: toggle drawer or go back
     }
 
-    protected void handleLogoClick() {
-        // Default implementation - can be overridden
-        // Example: go to home if not already there
-    }
+
 }

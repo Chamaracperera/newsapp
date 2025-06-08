@@ -4,7 +4,7 @@
     android:shape="oval">
 
     <!-- Solid to enable clipToOutline -->
-    <solid android:color="#FFFFFFFF" />
+    <solid android:color="@android:color/transparent" />
 
     <!-- Stroke -->
     <stroke
