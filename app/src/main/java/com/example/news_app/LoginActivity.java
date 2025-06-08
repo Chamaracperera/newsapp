@@ -125,7 +125,8 @@ public class LoginActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             // Save login state if "Remember Me" is checked
                                             if (rememberMeCheckBox.isChecked()) {
-                                                authPreferences.saveLoginState(true, username, email, true); // 4th param = rememberMe
+                                                authPreferences.saveLoginState(true, username, email, true);
+                                                authPreferences.savePassword(password);
                                             } else {
                                                 authPreferences.clearLoginState();
                                             }

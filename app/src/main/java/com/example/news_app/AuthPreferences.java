@@ -14,6 +14,7 @@ public class AuthPreferences {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_REMEMBER_ME = "remember_me";
+    private static final String KEY_PASSWORD = "password";
 
     public AuthPreferences(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -26,6 +27,10 @@ public class AuthPreferences {
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_EMAIL, email);
         editor.putBoolean(KEY_REMEMBER_ME, rememberMe);
+        editor.apply();
+    }
+    public void savePassword(String password) {
+        editor.putString(KEY_PASSWORD, password);
         editor.apply();
     }
 
@@ -50,6 +55,11 @@ public class AuthPreferences {
     public String getEmail() {
         return sharedPreferences.getString(KEY_EMAIL, "");
     }
+
+    public String getPassword() {
+        return sharedPreferences.getString(KEY_PASSWORD, "");
+    }
+
 
     // Check if "Remember Me" was enabled
     public boolean isRememberMeEnabled() {

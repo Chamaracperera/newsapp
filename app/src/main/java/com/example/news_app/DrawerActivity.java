@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -88,17 +87,10 @@ public class DrawerActivity extends BaseActivity {
                         Log.w(TAG, "No username or email found");
                     }
 
-                    // Load profile image
+                    // Load profile image using ProfileUtils
                     String imageUrl = snapshot.child("imageUrl").getValue(String.class);
-                    if (imageUrl != null && !imageUrl.isEmpty()) {
-                        Glide.with(DrawerActivity.this)
-                                .load(imageUrl)
-                                .placeholder(R.drawable.profile_placeholder)
-                                .error(R.drawable.profile_placeholder)
-                                .into(profileImage);
-                    } else {
-                        profileImage.setImageResource(R.drawable.profile_placeholder);
-                    }
+                    ProfileUtils.loadProfileImage(DrawerActivity.this, profileImage, currentUser);
+
                 } else {
                     // User data not found
                     if (currentUser.getEmail() != null) {
@@ -106,7 +98,6 @@ public class DrawerActivity extends BaseActivity {
                     } else {
                         profileName.setText("Guest");
                     }
-                    profileImage.setImageResource(R.drawable.profile_placeholder);
                     Log.w(TAG, "User data not found in database");
                 }
             }
@@ -138,8 +129,12 @@ public class DrawerActivity extends BaseActivity {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(0, R.animator.slide_out_left);
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                finish();
+                overridePendingTransition(0, R.animator.slide_out_left);
+            }
         });
 
         btnClose.setOnClickListener(v -> {
@@ -153,8 +148,15 @@ public class DrawerActivity extends BaseActivity {
         });
 
         menuProfile.setOnClickListener(v -> {
-            // Uncomment if ProfileActivity exists
-            // startActivity(new Intent(this, ProfileActivity.class));
+            MyProfileFragment fragment = new MyProfileFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left,
+                            R.animator.slide_in_left, R.animator.slide_out_right)
+                    .replace(R.id.drawer_content_frame, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         menuInfo.setOnClickListener(v -> {
@@ -172,4 +174,5 @@ public class DrawerActivity extends BaseActivity {
             finishAffinity(); // Clear all activities
         });
     }
+
 }
