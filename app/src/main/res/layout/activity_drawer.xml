@@ -65,16 +65,15 @@
                 app:cardCornerRadius="60dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@android:color/transparent"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false"
-                android:background="@drawable/profile_bg">
+                android:foreground="@drawable/profile_bg">
 
             <ImageView
                 android:id="@+id/profile_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="Profile Image" />
+                android:contentDescription="Profile Image"
+                android:fontFamily="@font/roboto_extrabold"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -117,7 +116,7 @@
                     android:text="Home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_extrabold"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"/>
             </LinearLayout>
@@ -142,6 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:fontFamily="@font/roboto_extrabold"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"/>
             </LinearLayout>
@@ -167,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
+                    android:fontFamily="@font/roboto_extrabold"
                     android:textSize="20sp"/>
             </LinearLayout>
 
@@ -198,6 +199,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
+                    android:fontFamily="@font/roboto_extrabold"
                     android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>

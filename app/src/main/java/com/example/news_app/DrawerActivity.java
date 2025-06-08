@@ -160,9 +160,17 @@ public class DrawerActivity extends BaseActivity {
         });
 
         menuInfo.setOnClickListener(v -> {
-            // Uncomment if DeveloperInfoActivity exists
-            // startActivity(new Intent(this, DeveloperInfoActivity.class));
+            DevFragment fragment = new DevFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left,
+                            R.animator.slide_in_left, R.animator.slide_out_right)
+                    .replace(R.id.drawer_content_frame, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
+
 
         btnSignout.setOnClickListener(v -> {
             firebaseAuth.signOut();

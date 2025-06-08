@@ -61,7 +61,7 @@
             app:cardCornerRadius="60dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent"
-            android:background="@drawable/profile_bg">
+            android:foreground="@drawable/profile_bg">
 
             <ImageView
                 android:id="@+id/profile_image"
