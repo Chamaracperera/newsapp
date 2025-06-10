@@ -66,6 +66,8 @@ public class HomeActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        makeStatusBarTransparent();
+
         setupToolbar(true,false); // From BaseActivity
         initializeViews();
         setupTabListeners();
@@ -112,6 +114,14 @@ public class HomeActivity extends BaseActivity implements
 
 
     }
+    protected void makeStatusBarTransparent() {
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+    }
+
 
 
     private void setupAdapters() {
