@@ -13,6 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone" />
+
+
+
     <!-- Popular Now Section -->
     <TextView
         android:layout_width="match_parent"
@@ -24,21 +35,30 @@
         android:paddingStart="24dp"
         android:layout_marginTop="-4dp"
         android:paddingEnd="24dp"
-        android:paddingBottom="1dp"/>
+        android:paddingBottom="0dp"/>
 
-    <!-- Featured News (RecyclerView for horizontal scroll) -->
 
-    <!-- Category Tabs (Fixed Mode) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/featuredRecycler"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/featuredViewPager"
         android:layout_width="match_parent"
-        android:layout_height="252dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="-10dp"
-        android:paddingBottom="16dp"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_featured_news" />
+        android:layout_height="240dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:overScrollMode="never" />
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-4dp"
+        android:layout_marginBottom="8dp"
+        app:dotsColor="#80FFFFFF"
+        app:selectedDotColor="@color/white"
+        app:dotsSize="8dp"
+        app:dotsCornerRadius="4dp"/>
 
     <LinearLayout
         android:id="@+id/categoryTabsContainer"
@@ -49,7 +69,7 @@
         android:layout_gravity="center"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingTop="4dp">
+        android:paddingTop="16dp">
 
         <!-- All Tab -->
         <TextView
@@ -57,7 +77,7 @@
             style="@style/TabStyle"
             android:text="All"
             android:textSize="17dp"
-            android:background="@drawable/bg_tab_selected" />
+            android:background="@drawable/bg_tab_selector" />
 
         <!-- Sports Tab -->
 
@@ -66,7 +86,7 @@
         <TextView
             android:id="@+id/tabSports"
             style="@style/TabStyle"
-            android:background="@drawable/bg_tab_unselected"
+            android:background="@drawable/bg_tab_selector"
             android:text="Sports"
             />
 
@@ -74,14 +94,14 @@
             android:id="@+id/tabAcademic"
             style="@style/TabStyle"
             android:text="Academic"
-            android:background="@drawable/bg_tab_unselected" />
+            android:background="@drawable/bg_tab_selector" />
 
         <!-- Events Tab -->
         <TextView
             android:id="@+id/tabEvents"
             style="@style/TabStyle"
             android:text="Events"
-            android:background="@drawable/bg_tab_unselected" />
+            android:background="@drawable/bg_tab_selector" />
     </LinearLayout>
 
 

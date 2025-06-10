@@ -1,15 +1,19 @@
 package com.example.news_app;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ValueEventListener;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +35,11 @@ public class HomeActivity extends BaseActivity implements
         RegularNewsAdapter.OnNewsClickListener {
 
     private static final String TAG = "HomeActivity";
-    private RecyclerView featuredRecycler, newsRecyclerView;
+    private ViewPager2 featuredViewPager;
+    private DotsIndicator dotsIndicator;
+    private RecyclerView newsRecyclerView;
     private FeaturedNewsAdapter featuredAdapter;
+
     private RegularNewsAdapter regularAdapter;
     private final List<NewsItem> featuredList = new ArrayList<>();
     private final List<NewsItem> newsItemList = new ArrayList<>();
@@ -40,6 +48,17 @@ public class HomeActivity extends BaseActivity implements
     private final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("events");
     private TextView tabAll, tabSports, tabAcademic, tabEvents;
     private View currentlySelectedTab;
+
+    private Handler sliderHandler = new Handler();
+    private Runnable sliderRunnable = () -> {
+        int current = featuredViewPager.getCurrentItem();
+        featuredViewPager.setCurrentItem(
+                current == featuredAdapter.getItemCount()-1 ? 0 : current+1
+        );
+    };
+    private ProgressBar progressBar;
+
+
 
 
     @Override
@@ -62,8 +81,11 @@ public class HomeActivity extends BaseActivity implements
 
 
     private void initializeViews() {
-        featuredRecycler = findViewById(R.id.featuredRecycler);
+        featuredViewPager = findViewById(R.id.featuredViewPager);
+        dotsIndicator = findViewById(R.id.dotsIndicator);
         newsRecyclerView = findViewById(R.id.newsRecyclerView);
+        progressBar = findViewById(R.id.progressBar);
+
 
         tabAll = findViewById(R.id.tabAll);
         tabSports = findViewById(R.id.tabSports);
@@ -71,17 +93,43 @@ public class HomeActivity extends BaseActivity implements
         tabEvents = findViewById(R.id.tabEvents);
 
         currentlySelectedTab = tabAll;
-        tabAll.setBackgroundResource(R.drawable.bg_tab_selected);
+        tabAll.setSelected(true);
+        tabAll.setAlpha(1.0f);
+        tabAll.setPaintFlags(tabAll.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        tabSports.setSelected(false);
+        tabSports.setAlpha(0.5f);
+        tabSports.setPaintFlags(tabSports.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+
+        tabAcademic.setSelected(false);
+        tabAcademic.setAlpha(0.5f);
+        tabAcademic.setPaintFlags(tabAcademic.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+
+        tabEvents.setSelected(false);
+        tabEvents.setAlpha(0.5f);
+        tabEvents.setPaintFlags(tabEvents.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+
+
 
     }
 
 
     private void setupAdapters() {
         // Featured news adapter with click listener
-        featuredRecycler.setLayoutManager(new LinearLayoutManager(
-                this, LinearLayoutManager.HORIZONTAL, false));
         featuredAdapter = new FeaturedNewsAdapter(this, featuredList, this);
-        featuredRecycler.setAdapter(featuredAdapter);
+        featuredViewPager.setAdapter(featuredAdapter);
+        featuredViewPager.setOffscreenPageLimit(3);
+        featuredViewPager.setPageTransformer(new ZoomOutPageTransformer());
+        dotsIndicator.setViewPager2(featuredViewPager);
+
+        featuredViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sliderHandler.removeCallbacks(sliderRunnable);
+                sliderHandler.postDelayed(sliderRunnable, 3000);
+            }
+        });
 
         // Regular news adapter with click listener
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,12 +145,18 @@ public class HomeActivity extends BaseActivity implements
         setupTabClickListener(tabEvents, "Events");
     }
 
-    private void setupTabClickListener(View tabView, String category) {
+    private void setupTabClickListener(TextView tabView, String category) {
         tabView.setOnClickListener(v -> {
             if (currentlySelectedTab != null) {
-                currentlySelectedTab.setBackgroundResource(R.drawable.bg_tab_unselected);
+                currentlySelectedTab.setSelected(false);
+                ((TextView) currentlySelectedTab).setAlpha(0.5f);
+                ((TextView) currentlySelectedTab).setPaintFlags(
+                        ((TextView) currentlySelectedTab).getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG)
+                );
             }
-            tabView.setBackgroundResource(R.drawable.bg_tab_selected);
+            tabView.setSelected(true);
+            tabView.setAlpha(1.0f);
+            tabView.setPaintFlags(tabView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             currentlySelectedTab = tabView;
             filterNewsByCategory(category);
         });
@@ -129,6 +183,7 @@ public class HomeActivity extends BaseActivity implements
     }
 
     private void loadNewsData() {
+        progressBar.setVisibility(View.VISIBLE);  // Show loading spinner
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -193,6 +248,8 @@ public class HomeActivity extends BaseActivity implements
 
                     featuredAdapter.notifyDataSetChanged();
                     regularAdapter.notifyDataSetChanged();
+
+                    progressBar.setVisibility(View.GONE);  // Hide loading spinner
                 });
             }
 
@@ -202,6 +259,8 @@ public class HomeActivity extends BaseActivity implements
                 Toast.makeText(HomeActivity.this,
                         "Failed to load news: " + error.getMessage(),
                         Toast.LENGTH_LONG).show();
+
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
