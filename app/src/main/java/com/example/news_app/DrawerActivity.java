@@ -3,6 +3,7 @@ package com.example.news_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class DrawerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
+        makeStatusBarTransparent();
+
         setupToolbar(false,true);
         initializeViews();
 
@@ -44,6 +47,14 @@ public class DrawerActivity extends BaseActivity {
         fetchUserData();
         setupListeners();
     }
+    protected void makeStatusBarTransparent() {
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+    }
+
 
     private void fetchUserData() {
         if (currentUser == null) {

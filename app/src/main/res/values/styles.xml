@@ -2,8 +2,10 @@
 <!-- res/values/styles.xml -->
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Valid items go here -->
-        <item name="android:windowContentTransitions">true</item>
+        <!-- Make status bar transparent -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
