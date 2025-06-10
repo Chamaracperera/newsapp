@@ -8,9 +8,11 @@ import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
@@ -29,6 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isPasswordVisible = false;
     private FirebaseAuth mAuth;
     private AuthPreferences authPreferences;
+
+
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +87,34 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         signupText = findViewById(R.id.signupText);
 
+        ImageView googleSignIn = findViewById(R.id.googleSignIn);
+        ImageView facebookSignIn = findViewById(R.id.facebookSignIn);
+        ImageView linkedinSignIn = findViewById(R.id.linkedinSignIn);
+
+        facebookSignIn.setOnClickListener(v ->
+                Toast.makeText(this, "Facebook login is not available right now.", Toast.LENGTH_SHORT).show());
+
+        linkedinSignIn.setOnClickListener(v ->
+                Toast.makeText(this, "LinkedIn login is not available right now.", Toast.LENGTH_SHORT).show());
+
+
+        googleSignIn.setOnClickListener(v -> signInWithGoogle());
+
+
         // Restore saved username if exists
         String savedUsername = authPreferences.getUsername();
         if (!savedUsername.isEmpty()) {
             usernameEditText.setText(savedUsername);
             rememberMeCheckBox.setChecked(true);
         }
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
 
         // Toggle password visibility
         passwordEditText.setOnTouchListener((v, event) -> {
@@ -174,4 +212,54 @@ public class LoginActivity extends AppCompatActivity {
             authPreferences.clearLoginState();
         }
     }
+    private void signInWithGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Toast.makeText(this, "Google sign in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        // Save user data to Realtime Database if needed
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                        User newUser = new User(user.getDisplayName(), user.getEmail());
+                        databaseReference.child(user.getUid()).setValue(newUser)
+                                .addOnCompleteListener(dbTask -> {
+                                    if (dbTask.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Google sign-in successful!",
+                                                Toast.LENGTH_SHORT).show();
+                                        navigateToHome();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this,
+                                                "Failed to save user data",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
 }

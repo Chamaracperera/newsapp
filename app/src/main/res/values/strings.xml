@@ -4,5 +4,6 @@
     <string name="footer_text">UOC | FOT</string>
     <string name="logo_desc">app logo</string>
     <string name="signup_text"><u>New user? Sign up</u></string>
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE</string>
 
 </resources>
