@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:fitsSystemWindows="false"
+    android:background="@drawable/home">
+
+    <!-- Toolbar -->
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone" />
+
+
+
+    <!-- Popular Now Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Popular now"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:fontFamily="@font/roboto_extrabolditalic"
+        android:paddingStart="24dp"
+        android:layout_marginTop="-4dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="0dp"/>
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/featuredViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:overScrollMode="never" />
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-4dp"
+        android:layout_marginBottom="8dp"
+        app:dotsColor="#80FFFFFF"
+        app:selectedDotColor="@color/white"
+        app:dotsSize="8dp"
+        app:dotsCornerRadius="4dp"/>
+
+    <LinearLayout
+        android:id="@+id/categoryTabsContainer"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_tab_container"
+        android:layout_gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="16dp">
+
+        <!-- All Tab -->
+        <TextView
+            android:id="@+id/tabAll"
+            style="@style/TabStyle"
+            android:text="All"
+            android:textSize="17dp"
+            android:background="@drawable/bg_tab_selector" />
+
+        <!-- Sports Tab -->
+
+        <!-- Academic Tab -->
+
+        <TextView
+            android:id="@+id/tabSports"
+            style="@style/TabStyle"
+            android:background="@drawable/bg_tab_selector"
+            android:text="Sports"
+            />
+
+        <TextView
+            android:id="@+id/tabAcademic"
+            style="@style/TabStyle"
+            android:text="Academic"
+            android:background="@drawable/bg_tab_selector" />
+
+        <!-- Events Tab -->
+        <TextView
+            android:id="@+id/tabEvents"
+            style="@style/TabStyle"
+            android:text="Events"
+            android:background="@drawable/bg_tab_selector" />
+    </LinearLayout>
+
+
+    <!-- Regular News List (Scrollable) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/newsRecyclerView"
+        android:layout_width="390dp"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
+        android:background="@drawable/news_container"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_regular_news"/>
+
+
+</LinearLayout>

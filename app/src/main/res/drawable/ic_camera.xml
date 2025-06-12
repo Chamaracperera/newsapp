@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="800dp"
+    android:height="800dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+  <!-- Main filled circle with white interior -->
+  <path
+      android:pathData="M256,0C114.61,0 0,114.61 0,256s114.61,256 256,256s256,-114.61 256,-256S397.39,0 256,0z"
+      android:fillColor="#FFFFFF"
+      android:strokeColor="#000000"
+      android:strokeWidth="2"/> <!-- Adjust strokeWidth as needed -->
+
+  <!-- Inner circle outline (reinforces the border) -->
+  <path
+      android:pathData="M256,472c-119.3,0 -216,-96.7 -216,-216S136.7,40 256,40s216,96.7 216,216S375.3,472 256,472z"
+      android:fillColor="#00000000"
+      android:strokeColor="#000000"
+      android:strokeWidth="20"/>
+
+  <!-- Eyes -->
+  <path
+      android:pathData="M256,224c-26.51,0 -48,21.5 -48,48c0,26.52 21.49,48 48,48c26.52,0 48,-21.48 48,-48C304,245.5 282.52,224 256,224z"
+      android:fillColor="#000000"/>
+
+  <!-- Mouth -->
+  <path
+      android:pathData="M368,192h-71.92c-3.64,0 -7.31,-14.55 -8.08,-16.08c-1.59,-3.2 -7.16,-15.92 -16,-15.92h-32c-8.84,0 -14.4,12.72 -16,15.92c-0.77,1.53 -4.44,16.08 -8.08,16.08H144c-8.84,0 -16,7.23 -16,16.06v128.02c0,8.84 7.16,15.92 16,15.92h224c8.84,0 16,-7.08 16,-15.92V208.06C384,199.23 376.84,192 368,192zM256,336c-35.34,0 -64,-28.64 -64,-64c0,-35.34 28.66,-64 64,-64c35.36,0 64,28.66 64,64C320,307.36 291.36,336 256,336z"
+      android:fillColor="#000000"/>
+</vector>
