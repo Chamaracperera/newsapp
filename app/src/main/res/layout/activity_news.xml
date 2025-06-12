@@ -28,9 +28,8 @@
         <TextView
             android:id="@+id/newsTitle"
             android:layout_width="338dp"
-            android:layout_height="47dp"
+            android:layout_height="56dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"
             android:text="News Title"
             android:textColor="@android:color/white"
             android:textSize="20sp"
@@ -46,7 +45,7 @@
             <TextView
                 android:id="@+id/newsDate"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="2025/04/03"
@@ -155,16 +154,23 @@
 
 
         <!-- Description -->
-        <TextView
-            android:id="@+id/newsDescription"
-            android:layout_width="365dp"
-            android:layout_height="372dp"
-            android:layout_marginBottom="12dp"
-            android:lineSpacingExtra="4dp"
-            android:text="News content goes here..."
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="italic" />
+        <!-- Scrollable Description -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/newsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4dp"
+                android:text="News content goes here..."
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:paddingBottom="16dp"/>
+        </ScrollView>
 
     </LinearLayout>
 </LinearLayout>
