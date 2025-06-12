@@ -100,7 +100,9 @@
             android:layout_marginLeft="80dp"
             android:text="Forget password?"
             android:textColor="#000"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
     <!-- Login Button -->
