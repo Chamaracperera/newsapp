@@ -117,9 +117,9 @@ Separation of concerns across activities like `LoginActivity`, `SignupActivity`,
 
 ## 🙌 Author
 
-**Your Name**  
-Trainee Full Stack Developer  
-University of Colombo / University of Moratuwa  
+**Chamara perera**  
+Undergraduate (BICT)  
+University of Colombo
 [LinkedIn](https://linkedin.com/in/your-profile) • [GitHub](https://github.com/yourusername)
 
 ---
