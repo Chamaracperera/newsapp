@@ -1,9 +1,22 @@
+<p align="center">
+  <img src="app/src/main/res/drawable/ic_logo.png" alt="News App Logo" width="120"/>
+</p>
 
-# 📰 News App - Android Firebase News Platform
+<h1 align="center">📱 FoT Live | Faculty News App</h1>
 
-Welcome to **News App**, a modern, real-time news platform built with **Java**, **Firebase**, and **Material Design** for Android. This app brings users a sleek and dynamic news experience with personalized categories, real-time content updates, push notifications, and smooth UI animations.
+<p align="center">
+  <strong>Developed by Chamara Perera</strong><br/>
+  BICT Degree Program<br/>
+  Faculty of Technology, University of Colombo
+</p>
 
 ---
+
+## 📰 About the App
+
+The Faculty News App is an Android application designed to keep students, staff, and faculty members of the University of Colombo's Faculty of Technology up to date with the latest news and events.
+
+It fetches real-time data from Firebase and displays featured news in a carousel and categorized news items in a user-friendly layout.
 
 ## 📱 Features
 
@@ -25,13 +38,6 @@ Clean UI with `ConstraintLayout`, `CardView`, and responsive layouts inspired by
 ✅ **Modular Code**  
 Separation of concerns across activities like `LoginActivity`, `SignupActivity`, `HomeActivity`, and `NewsActivity`.
 
----
-
-## 📸 Screenshots
-
-| Splash Screen | Login | Home | News Detail |
-|---------------|-------|------|-------------|
-| ![splash](assets/screens/splash.png) | ![login](assets/screens/login.png) | ![home](assets/screens/home.png) | ![news](assets/screens/news_detail.png) |
 
 ---
 
