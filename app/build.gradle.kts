@@ -47,6 +47,7 @@ dependencies {
     implementation ("com.tbuonomo:dotsindicator:4.3")
     implementation ("com.google.firebase:firebase-auth:22.3.1")
     implementation ("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 
 
     testImplementation(libs.junit)

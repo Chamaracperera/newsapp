@@ -77,6 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             proceedToLoginUI();
         }
+        // Add this to your LoginActivity's onCreate() method
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+        });
     }
     protected void makeStatusBarTransparent() {
         getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
