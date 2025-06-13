@@ -187,6 +187,8 @@ public class DrawerActivity extends BaseActivity {
             firebaseAuth.signOut();
             authPreferences.clearLoginState();
 
+            Toast.makeText(DrawerActivity.this, "Logout successful!", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
