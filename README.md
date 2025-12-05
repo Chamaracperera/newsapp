@@ -12,6 +12,11 @@
 
 ---
 
+## 📦 Download APK  
+You can download the latest release here:  
+👉 [**Download FoT Live APK**](https://github.com/Chamaracperera/AppSpeedTest/blob/66f32e5e44e316366a5bc4966d3a044a6617bd5f/assets/App%20Speed%20Test.apk)
+
+
 ## 📰 About the App
 
 The Faculty News App is an Android application designed to keep students, staff, and faculty members of the University of Colombo's Faculty of Technology up to date with the latest news and events.
